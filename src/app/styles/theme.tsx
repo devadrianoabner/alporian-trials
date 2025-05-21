@@ -10,11 +10,10 @@ const theme = {
     gray: "#999999",
   },
   fonts: {
-    heading: "Verdana, Geneva, sans-serif",
     body: "Arial, Helvetica, sans-serif",
   },
-  borderRadius: "12px",
-  spacing: (factor: number) => `${factor * 8}px`,
+  borderRadius: "8px",
+  spacing: (f: number) => `${f * 8}px`,
 };
 
 export default theme;
