@@ -38,9 +38,43 @@ export type BuffDebuff = {
 
 export type Carroca = AtributosBase & {
   habilidades: Habilidade[];
-  equipamentos: Modificador[];
-  aprimoramentos: Modificador[];
-  efeitosTemporarios: BuffDebuff[];
-  essencia: number; // moeda para upgrades
-  poder: number; // soma total dos atributos + efeitos
+  equipamentos: Modificador[];      // espadas, armaduras, selas...
+  aprimoramentos: Modificador[];    // atualizações diretas da carroça
+  efeitosTemporarios: BuffDebuff[]; // buffs/debuffs ativos
+  essencia: number;
+  poder: number;
+};
+
+export type Equipamento = {
+  id: string;
+  nome: string;
+  descricao: string;
+  alvo: "carroca" | "tripulacao" | "passageiro" | "global";
+  tipo: "arma" | "defesa" | "suporte" | "magia";
+  efeitoBase: (atributos: AtributosBase) => AtributosBase;
+  refinamentos?: Refinamento[];
+  encantamentos?: Encantamento[];
+  runas?: Runa[];
+};
+
+export type Refinamento = {
+  id: string;
+  nome: string;
+  descricao: string;
+  aplicar: (equip: Equipamento) => Equipamento;
+};
+
+export type Encantamento = {
+  id: string;
+  nome: string;
+  descricao: string;
+  aplicar: (atributos: AtributosBase) => AtributosBase;
+};
+
+export type Runa = {
+  id: string;
+  nome: string;
+  descricao: string;
+  alterarEfeito?: (equip: Equipamento) => Equipamento;
+  alterarAtributos?: (atributos: AtributosBase) => AtributosBase;
 };
