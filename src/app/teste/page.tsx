@@ -2,7 +2,10 @@
 
 import { useCarrocaStore } from "@/app/store/carrocaStore";
 import toast from "react-hot-toast";
-
+import { useState } from "react";
+import { useEffect } from "react";
+import { sortearEventoAleatorio } from "@/app/features/eventos/eventosMock";
+import type { Evento } from "@/app/features/eventos/eventosMock";
 
 export default function PaginaDeTeste() {
   const carroca = useCarrocaStore((state) => state.carroca);
@@ -10,6 +13,13 @@ export default function PaginaDeTeste() {
   const restaurarVida = useCarrocaStore((state) => state.restaurarVida);
   const ganharEssencia = useCarrocaStore((state) => state.ganharEssencia);
   const calcularPoder = useCarrocaStore((state) => state.calcularPoder);
+
+  const [evento, setEvento] = useState<Evento | null>(null);
+
+  useEffect(() => {
+    setEvento(sortearEventoAleatorio());
+  }, []);
+  if (!evento) return null;
 
   return (
     <main style={{ padding: "2rem", fontFamily: "sans-serif" }}>
@@ -48,6 +58,32 @@ export default function PaginaDeTeste() {
         <button onClick={() => toast.success("Poder: " + calcularPoder())}>
           Calcular Poder
         </button>
+      </section>
+      <section style={{ marginTop: "3rem" }}>
+        <h2>📜 Evento: {evento.titulo}</h2>
+        <p>{evento.descricao}</p>
+
+        <div
+          style={{
+            marginTop: "1rem",
+            display: "flex",
+            gap: "1rem",
+            flexWrap: "wrap",
+          }}
+        >
+          {evento.opcoes.map((opcao) => (
+            <button
+              key={opcao.id}
+              onClick={() => {
+                opcao.acao();
+                toast.success(`Você escolheu: ${opcao.texto}`);
+                setEvento(sortearEventoAleatorio());
+              }}
+            >
+              {opcao.texto}
+            </button>
+          ))}
+        </div>
       </section>
     </main>
   );

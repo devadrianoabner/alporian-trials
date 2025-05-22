@@ -56,17 +56,12 @@ export const useCarrocaStore = create<CarrocaStore>((set, get) => ({
   calcularPoder: () => {
     const state = get().carroca;
 
-    // Poder básico: soma de atributos principais
     const poderBase =
-      state.ataque +
-      state.defesaBase +
-      state.capacidade * 5 +
-      state.velocidade * 10;
+      Math.floor(state.vidaMaxima / 10) + state.ataque + state.defesaBase;
 
-    // Poder adicional por buffs e equipamentos
     const efeitoBuffs = state.efeitosTemporarios.reduce((acc, buff) => {
       const mod = buff.efeito(state);
-      return acc + (mod.ataque - state.ataque); // Exemplo simples
+      return acc + (mod.ataque - state.ataque); // ajuste se quiser outros atributos
     }, 0);
 
     const efeitoEquipamentos = state.equipamentos.reduce((acc, eq) => {
@@ -76,7 +71,6 @@ export const useCarrocaStore = create<CarrocaStore>((set, get) => ({
 
     const total = poderBase + efeitoBuffs + efeitoEquipamentos;
 
-    // Atualiza na store também
     set((s) => ({
       carroca: { ...s.carroca, poder: total },
     }));
