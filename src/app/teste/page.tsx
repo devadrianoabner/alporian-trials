@@ -1,11 +1,10 @@
 "use client";
 
 import { useCarrocaStore } from "@/app/store/carrocaStore";
-import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { sortearEventoAleatorio } from "@/app/features/eventos/eventosMock";
 import type { Evento } from "@/app/features/eventos/eventosMock";
-import { couracaPedraViva } from "@/app/features/equipamentos/equipamentosMock";
 
 export default function PaginaDeTeste() {
   const carroca = useCarrocaStore((state) => state.carroca);
@@ -18,26 +17,13 @@ export default function PaginaDeTeste() {
 
   useEffect(() => {
     setEvento(sortearEventoAleatorio());
-
-    useCarrocaStore.setState((state) => ({
-      carroca: {
-        ...state.carroca,
-        equipamentos: [couracaPedraViva], // Equipamento aplicado
-      },
-    }));
-
-    useCarrocaStore.getState().calcularPoder();
   }, []);
 
-  if (!evento) return null;
-
-  console.log("Componente renderizado");
-
   return (
-    <main style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h1> Teste - HUD da Carroça</h1>
+    <main style={{ padding: "2rem", fontFamily: "sans-serif", color: "white" }}>
+      <h1>Página de Teste</h1>
 
-      <section style={{ marginBottom: "1.5rem" }}>
+      <section>
         <p>
           <strong>Nome:</strong> {carroca.nome}
         </p>
@@ -61,8 +47,15 @@ export default function PaginaDeTeste() {
         </p>
       </section>
 
-      <section style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-        <button onClick={() => receberDano(20)}>Receber 20 de dano</button>
+      <section
+        style={{
+          display: "flex",
+          gap: "1rem",
+          flexWrap: "wrap",
+          marginTop: "1rem",
+        }}
+      >
+        <button onClick={() => receberDano(20)}>Receber 20 de Dano</button>
         <button onClick={restaurarVida}>Restaurar Vida</button>
         <button onClick={() => ganharEssencia(10)}>
           Ganhar 10 de Essência
@@ -72,32 +65,33 @@ export default function PaginaDeTeste() {
         </button>
       </section>
 
-      <section style={{ marginTop: "3rem" }}>
-        <h2>📜 Evento: {evento.titulo}</h2>
-        <p>{evento.descricao}</p>
-
-        <div
-          style={{
-            marginTop: "1rem",
-            display: "flex",
-            gap: "1rem",
-            flexWrap: "wrap",
-          }}
-        >
-          {evento.opcoes.map((opcao) => (
-            <button
-              key={opcao.id}
-              onClick={() => {
-                opcao.acao();
-                toast.success(`Você escolheu: ${opcao.texto}`);
-                setEvento(sortearEventoAleatorio());
-              }}
-            >
-              {opcao.texto}
-            </button>
-          ))}
-        </div>
-      </section>
+      {evento && (
+        <section style={{ marginTop: "3rem" }}>
+          <h2>📜 Evento: {evento.titulo}</h2>
+          <p>{evento.descricao}</p>
+          <div
+            style={{
+              marginTop: "1rem",
+              display: "flex",
+              gap: "1rem",
+              flexWrap: "wrap",
+            }}
+          >
+            {evento.opcoes.map((opcao: Evento["opcoes"][number]) => (
+              <button
+                key={opcao.id}
+                onClick={() => {
+                  opcao.acao();
+                  toast.success(`Você escolheu: ${opcao.texto}`);
+                  setEvento(sortearEventoAleatorio());
+                }}
+              >
+                {opcao.texto}
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   );
 }
