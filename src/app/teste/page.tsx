@@ -2,10 +2,10 @@
 
 import { useCarrocaStore } from "@/app/store/carrocaStore";
 import toast from "react-hot-toast";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { sortearEventoAleatorio } from "@/app/features/eventos/eventosMock";
 import type { Evento } from "@/app/features/eventos/eventosMock";
+import { couracaPedraViva } from "@/app/features/equipamentos/equipamentosMock";
 
 export default function PaginaDeTeste() {
   const carroca = useCarrocaStore((state) => state.carroca);
@@ -18,8 +18,20 @@ export default function PaginaDeTeste() {
 
   useEffect(() => {
     setEvento(sortearEventoAleatorio());
+
+    useCarrocaStore.setState((state) => ({
+      carroca: {
+        ...state.carroca,
+        equipamentos: [couracaPedraViva], // Equipamento aplicado
+      },
+    }));
+
+    useCarrocaStore.getState().calcularPoder();
   }, []);
+
   if (!evento) return null;
+
+  console.log("Componente renderizado");
 
   return (
     <main style={{ padding: "2rem", fontFamily: "sans-serif" }}>
@@ -59,6 +71,7 @@ export default function PaginaDeTeste() {
           Calcular Poder
         </button>
       </section>
+
       <section style={{ marginTop: "3rem" }}>
         <h2>📜 Evento: {evento.titulo}</h2>
         <p>{evento.descricao}</p>

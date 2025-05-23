@@ -38,8 +38,8 @@ export type BuffDebuff = {
 
 export type Carroca = AtributosBase & {
   habilidades: Habilidade[];
-  equipamentos: Modificador[];      // espadas, armaduras, selas...
-  aprimoramentos: Modificador[];    // atualizações diretas da carroça
+  equipamentos: Equipamento[]; // espadas, armaduras, selas...
+  aprimoramentos: Modificador[]; // atualizações diretas da carroça
   efeitosTemporarios: BuffDebuff[]; // buffs/debuffs ativos
   essencia: number;
   poder: number;

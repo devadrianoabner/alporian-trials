@@ -61,13 +61,13 @@ export const useCarrocaStore = create<CarrocaStore>((set, get) => ({
 
     const efeitoBuffs = state.efeitosTemporarios.reduce((acc, buff) => {
       const mod = buff.efeito(state);
-      return acc + (mod.ataque - state.ataque); // ajuste se quiser outros atributos
-    }, 0);
-
-    const efeitoEquipamentos = state.equipamentos.reduce((acc, eq) => {
-      const mod = eq.efeito(state);
       return acc + (mod.ataque - state.ataque);
     }, 0);
+
+ const efeitoEquipamentos = state.equipamentos.reduce((acc, eq) => {
+  const mod = eq.efeitoBase(state); 
+  return acc + (mod.ataque - state.ataque);
+}, 0);
 
     const total = poderBase + efeitoBuffs + efeitoEquipamentos;
 
